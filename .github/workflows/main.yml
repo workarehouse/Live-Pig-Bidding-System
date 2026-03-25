@@ -1,0 +1,48 @@
+name: 部署
+
+on:
+    workflow_dispatch: # 添加此行以启用手动触发
+
+jobs:
+    build_and_deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            # - name: Setup Node.js
+            #   uses: actions/setup-node@v2
+            #   with:
+            #       node-version: 18 # 或者你的项目所需的 Node.js 版本
+
+            # - name: 检查缓存
+            #   uses: actions/cache@v2
+            #   with:
+            #       path: |
+            #           ~/.yarn
+            #           node_modules
+            #       key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+            #       restore-keys: |
+            #           ${{ runner.os }}-yarn-
+
+            # - name: 配置 Yarn 源
+            #   run: |
+            #       yarn config set strict-ssl false
+
+            # - name: 安装包
+            #   run: yarn install --frozen-lockfile
+
+            # - name: 打包
+            #   run: yarn build
+
+            # - name: 压缩包
+            #   run: tar -czf dist.tar.gz -C dist .
+
+            - name: 部署到服务器
+              uses: appleboy/ssh-action@master
+              with:
+                  host: 10.0.0.161
+                  username: root
+                  password: LnsTest@2022
+                  script: echo "SSH 连接成功"
