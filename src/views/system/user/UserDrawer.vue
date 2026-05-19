@@ -41,6 +41,10 @@ const [registerForm, { setProps, resetFields, setFieldsValue, validate, updateSc
 const showFooter = ref(true)
 //表单赋值
 const [registerDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (data) => {
+    // 打开抽屉时刷新部门树
+    const treeRes = await defHttp.get({ url: '/xmsale/baseapi/findsaleOrgTree' })
+    treeData.value = markLeafOnlyCheckable(treeRes || [])
+
     // 组合成数组,数据权限赋值
     checkedKeys.value = data?.record?.dataAuth ? data.record.dataAuth.split(',') : []
     console.log(checkedKeys.value)
@@ -123,10 +127,29 @@ const [registerDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (
 const getTitle = computed(() => (!unref(isUpdate) ? '新增用户' : '编辑用户'))
 const { adaptiveWidth } = useDrawerAdaptiveWidth()
 
+type TreeNode = {
+    children?: TreeNode[]
+    checkable?: boolean
+    disableCheckbox?: boolean
+    [key: string]: unknown
+}
+
 // checkedKeys用,拼接成字符串
 const sumCheckedKeys = computed(() => {
     return checkedKeys?.value.join(',')
 })
+
+const markLeafOnlyCheckable = (nodes: TreeNode[] = []): TreeNode[] => {
+    return nodes.map((node) => {
+        const hasChildren = Array.isArray(node.children) && node.children.length > 0
+        return {
+            ...node,
+            checkable: !hasChildren,
+            disableCheckbox: hasChildren,
+            children: hasChildren ? markLeafOnlyCheckable(node.children) : node.children
+        }
+    })
+}
 
 //提交事件
 async function handleSubmit() {
@@ -151,7 +174,7 @@ async function handleSubmit() {
 onMounted(() => {
     // 获取部门树
     defHttp.get({ url: '/xmsale/baseapi/findsaleOrgTree' }).then((res) => {
-        treeData.value = res
+        treeData.value = markLeafOnlyCheckable(res || [])
     })
 })
 </script>
