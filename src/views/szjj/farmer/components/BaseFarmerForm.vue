@@ -150,6 +150,27 @@
         </a-col>
 
         <a-col :span="8">
+          <a-form-item label="猪场厂长" v-bind="validateInfos.farmmgr">
+            <a-input v-model:value="formData.farmmgr" placeholder="请输入猪场厂长" :maxlength="30"
+              :disabled="disabled"></a-input>
+          </a-form-item>
+        </a-col>
+
+        <a-col :span="8">
+          <a-form-item label="猪场财务人员" v-bind="validateInfos.farmfin">
+            <a-input v-model:value="formData.farmfin" placeholder="请输入猪场财务人员" :maxlength="30"
+              :disabled="disabled"></a-input>
+          </a-form-item>
+        </a-col>
+
+        <a-col :span="8">
+          <a-form-item label="猪场开票员" v-bind="validateInfos.farmchck">
+            <a-input v-model:value="formData.farmchck" placeholder="请输入猪场开票员" :maxlength="30"
+              :disabled="disabled"></a-input>
+          </a-form-item>
+        </a-col>
+
+        <a-col :span="8">
           <a-form-item label="交割点" v-bind="validateInfos.delvaddr">
             <a-input v-model:value="formData.delvaddr" placeholder="请输入交割地点" :disabled="disabled"></a-input>
           </a-form-item>
@@ -273,6 +294,9 @@ const formData = reactive<Record<string, any>>({
   wtflg: '',
   romflg: '',
   lnkphone: '',
+  farmmgr: '',
+  farmfin: '',
+  farmchck: '',
   delvaddr: '',
   delvlng: '',
   delvlat: '',

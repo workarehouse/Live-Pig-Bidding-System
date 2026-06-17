@@ -1,55 +1,49 @@
-JEECG BOOT 低代码开发平台（Vue3前端）
-===============
+# JEECG BOOT 低代码开发平台（Vue3 前端）
+
 当前最新版本： 3.3.0（发布时间：20220725）
+
 > 变更大版本号与后台同步 3.3.X，后续单独发布版本会更新小版本号。
 
-
 ## 简介
-JeecgBoot-Vue3采用 Vue3.0、Vite、 Ant-Design-Vue、TypeScript 等新技术方案，包括二次封装组件、utils、hooks、动态菜单、权限校验、按钮级别权限控制等功能。
-是在 Vben-Admin 基础上研发的，适合于JeecgBoot低代码平台的VUE3版前端解决方案，目前已是稳定版本，可用于生产项目。
- 
-> 强大的代码生成器让前后端代码一键生成! JeecgBoot引领低代码开发模式(OnlineCoding-> 代码生成-> 手工MERGE)， 帮助解决Java项目70%的重复工作，让开发更多关注业务。既能快速提高效率，节省成本，同时又不失灵活性
 
-##  项目源码
+JeecgBoot-Vue3 采用 Vue3.0、Vite、 Ant-Design-Vue、TypeScript 等新技术方案，包括二次封装组件、utils、hooks、动态菜单、权限校验、按钮级别权限控制等功能。是在 Vben-Admin 基础上研发的，适合于 JeecgBoot 低代码平台的 VUE3 版前端解决方案，目前已是稳定版本，可用于生产项目。
 
-| 仓库 |前端源码Vue3版 | 前端源码Vue2版 | 后端源码 |
-|-|-|-|-|
-| Github | [jeecgboot-vue3](https://github.com/jeecgboot/jeecgboot-vue3)  | [ant-design-vue-jeecg](https://github.com/jeecgboot/jeecg-boot/tree/master/ant-design-vue-jeecg) | [jeecg-boot](https://github.com/jeecgboot/jeecg-boot) |
-| 码云 | [jeecgboot-vue3](https://gitee.com/jeecg/jeecgboot-vue3)  | [ant-design-vue-jeecg](https://gitee.com/jeecg/jeecg-boot/tree/master/ant-design-vue-jeecg)  | [jeecg-boot](https://gitee.com/jeecg/jeecg-boot) |
+> 强大的代码生成器让前后端代码一键生成! JeecgBoot 引领低代码开发模式(OnlineCoding-> 代码生成-> 手工 MERGE)， 帮助解决 Java 项目 70%的重复工作，让开发更多关注业务。既能快速提高效率，节省成本，同时又不失灵活性
 
+## 项目源码
+
+| 仓库 | 前端源码 Vue3 版 | 前端源码 Vue2 版 | 后端源码 |
+| --- | --- | --- | --- |
+| Github | [jeecgboot-vue3](https://github.com/jeecgboot/jeecgboot-vue3) | [ant-design-vue-jeecg](https://github.com/jeecgboot/jeecg-boot/tree/master/ant-design-vue-jeecg) | [jeecg-boot](https://github.com/jeecgboot/jeecg-boot) |
+| 码云 | [jeecgboot-vue3](https://gitee.com/jeecg/jeecgboot-vue3) | [ant-design-vue-jeecg](https://gitee.com/jeecg/jeecg-boot/tree/master/ant-design-vue-jeecg) | [jeecg-boot](https://gitee.com/jeecg/jeecg-boot) |
 
 ##### 项目说明
 
-| 项目名                | 说明                     | 
-|--------------------|------------------------|
-| `jeecgboot-vue3` | Vue3版前端代码 | 
-| `jeecg-boot`    | JAVA后台（支持微服务）        | 
-| `ant-design-vue-jeecg`  |Vue2版前端代码（默认与主项目一起）       |   
+| 项目名                 | 说明                                |
+| ---------------------- | ----------------------------------- |
+| `jeecgboot-vue3`       | Vue3 版前端代码                     |
+| `jeecg-boot`           | JAVA 后台（支持微服务）             |
+| `ant-design-vue-jeecg` | Vue2 版前端代码（默认与主项目一起） |
 
-
-
-> 入门必看>>[切换Vue3路由](http://vue3.jeecg.com/2671576)
-
+> 入门必看>>[切换 Vue3 路由](http://vue3.jeecg.com/2671576)
 
 ## 技术文档
 
 -   开发文档：[http://vue3.jeecg.com](http://vue3.jeecg.com)
 -   官方网站： [http://www.jeecg.com](http://www.jeecg.com)
 -   在线演示：[http://boot3.jeecg.com](http://boot3.jeecg.com)
--  快速入门：[入门视频](https://www.bilibili.com/video/BV1V34y187Y9 "入门视频") |  [ 代码生成](http://vue3.jeecg.com/2677352)
--   QQ交流群：683903138
+-   快速入门：[入门视频](https://www.bilibili.com/video/BV1V34y187Y9 '入门视频') | [ 代码生成](http://vue3.jeecg.com/2677352)
+-   QQ 交流群：683903138
 
 ## 安装与使用
 
-
-  
-- Get the project code
+-   Get the project code
 
 ```bash
 git clone https://github.com/jeecgboot/jeecgboot-vue3.git
 ```
 
-- Installation dependencies
+-   Installation dependencies
 
 ```bash
 cd jeecgboot-vue3
@@ -58,36 +52,36 @@ yarn install
 
 ```
 
-- 配置后台接口地址
+-   配置后台接口地址
+
 ```bash
 .env.development
 ```
 
-- run
+-   run
 
 ```bash
 yarn serve
 ```
 
-
-- build
+-   build
 
 ```bash
 yarn build
 ```
 
+## Docker 镜像启动前端(单体模式)
 
-## Docker镜像启动前端(单体模式)
-
-- host设置
+-   host 设置
 
 ```bash
 127.0.0.1 jeecg-boot-system
 127.0.0.1 jeecg-boot-gateway
 ```
->注意： 需要把`127.0.0.1`替换成真实IP 比如`192.`开头,不然后端不通。
 
-- 下载项目
+> 注意： 需要把`127.0.0.1`替换成真实 IP 比如`192.`开头,不然后端不通。
+
+-   下载项目
 
 ```bash
 git clone https://github.com/jeecgboot/jeecgboot-vue3.git
@@ -95,16 +89,17 @@ git clone https://github.com/jeecgboot/jeecgboot-vue3.git
 cd jeecgboot-vue3
 
 ```
-- 修改后台域名
-.env.production
+
+-   修改后台域名 .env.production
 
 ```bash
 VITE_GLOB_API_URL=/jeecgboot
 VITE_GLOB_DOMAIN_URL=http://jeecg-boot-system:8080/jeecg-boot
 ```
+
 后台单体启动 [见此文档](http://doc.jeecg.com/2043889)
 
-- 编译项目
+-   编译项目
 
 ```bash
 yarn install
@@ -112,21 +107,22 @@ yarn install
 yarn build
 ```
 
-- 启动容器
+-   启动容器
+
 ```bash
 docker build -t jeecgboot-vue3 .
 docker run --name jeecgboot-vue3-nginx -p 80:80 -d jeecgboot-vue3
 ```
 
-- 访问前台
+-   访问前台
 
 http://localhost
 
-## Docker镜像启动前端(微服务模式)
+## Docker 镜像启动前端(微服务模式)
+
 > 这里只写与单体的区别步骤
 
--  区别1. 修改后台域名
-.env.production
+-   区别 1. 修改后台域名 .env.production
 
 ```bash
 VITE_GLOB_API_URL=/jeecgboot
@@ -135,22 +131,22 @@ VITE_GLOB_DOMAIN_URL=http://jeecg-boot-gateway:9999
 
 后台微服务启动 [见此文档](http://doc.jeecg.com/2656147)
 
-- 区别2. 修改Dockerfile文件
+-   区别 2. 修改 Dockerfile 文件
 
 ```bash
 - 把`http://jeecg-boot-system:8080/jeecg-boot`替换成 `http://jeecg-boot-gateway:9999`
 - 把`jeecg-boot-system`替换成 `jeecg-boot-gateway`
 ```
 
--  其他与单体模式一样
+-   其他与单体模式一样
 
 ```bash
 镜像需要重现构建，最好把单体的镜像删掉，重新构建docker镜像。
 ```
 
-
 ## 功能模块
-> vue3版本已经实现了系统管理、系统监控、报表、各种组件、前端权限、GUI代码生成、Online表单、Online报表等平台功能，完全可以用于生产环境。
+
+> vue3 版本已经实现了系统管理、系统监控、报表、各种组件、前端权限、GUI 代码生成、Online 表单、Online 报表等平台功能，完全可以用于生产环境。
 
 ```
 ├─首页
@@ -226,7 +222,7 @@ VITE_GLOB_DOMAIN_URL=http://jeecg-boot-gateway:9999
 │  └─图片翻页
 │  └─图片预览
 │  └─PDF预览
-│─封装通用组件 
+│─封装通用组件
 │  ├─行编辑表格JVxeTable
 │  └─省略显示组件
 │  └─时间控件
@@ -281,85 +277,59 @@ VITE_GLOB_DOMAIN_URL=http://jeecg-boot-gateway:9999
 │  ├─更多功能
 │  └─。。。
 └─其他模块 (暂不开源)
-   └─更多功能开发中。。 
-   
+   └─更多功能开发中。。
+
 ```
 
+## 系统效果
 
-
-
-##   系统效果
 系统后台
 
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142327.png "在这里输入图片标题")
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142354.png "在这里输入图片标题")
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142339.png "在这里输入图片标题")
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142409.png "在这里输入图片标题")
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142401.png "在这里输入图片标题")
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_11.png "在这里输入图片标题")
+![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142327.png '在这里输入图片标题') ![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142354.png '在这里输入图片标题') ![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142339.png '在这里输入图片标题') ![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142409.png '在这里输入图片标题') ![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142401.png '在这里输入图片标题') ![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_11.png '在这里输入图片标题')
 
-Online表单&Online报表&代码生成
-![](https://oscimg.oschina.net/oscnet/up-e8862f2c3c14eace9090c20a8fb928234a4.png)
-![](https://oscimg.oschina.net/oscnet/up-e3b3a736236bc66f255a9a32ab3f9b7196b.png)
-![](https://oscimg.oschina.net/oscnet/up-221b8cbdea3c17d31a1365023a73d3d439f.png)
-![](https://oscimg.oschina.net/oscnet/up-14092f6f213b26ab145cf70b2dc6dec5635.png)
+Online 表单&Online 报表&代码生成 ![](https://oscimg.oschina.net/oscnet/up-e8862f2c3c14eace9090c20a8fb928234a4.png) ![](https://oscimg.oschina.net/oscnet/up-e3b3a736236bc66f255a9a32ab3f9b7196b.png) ![](https://oscimg.oschina.net/oscnet/up-221b8cbdea3c17d31a1365023a73d3d439f.png) ![](https://oscimg.oschina.net/oscnet/up-14092f6f213b26ab145cf70b2dc6dec5635.png)
 
 报表效果
 
-![](https://static.oschina.net/uploads/img/201904/14160828_pkFr.png "")
-![](https://static.oschina.net/uploads/img/201904/14160834_Lo23.png "")
-![](https://static.oschina.net/uploads/img/201904/14160842_QK7B.png "")
-![](https://static.oschina.net/uploads/img/201904/14160849_GBm5.png "")
-![](https://static.oschina.net/uploads/img/201904/14160858_6RAM.png "")
+![](https://static.oschina.net/uploads/img/201904/14160828_pkFr.png) ![](https://static.oschina.net/uploads/img/201904/14160834_Lo23.png) ![](https://static.oschina.net/uploads/img/201904/14160842_QK7B.png) ![](https://static.oschina.net/uploads/img/201904/14160849_GBm5.png) ![](https://static.oschina.net/uploads/img/201904/14160858_6RAM.png)
 
 接口文档
 
 ![](https://oscimg.oschina.net/oscnet/up-e6ea09dbaa01b8458c2e23614077ba9507f.png)
 
-
 流程设计&表单设计
 
-![](https://oscimg.oschina.net/oscnet/up-fe98e9f766e5abb6759f6f13d5f9186f0cf.png)
-![](https://static.oschina.net/uploads/img/201904/14160917_9Ftz.png "")
-![](https://static.oschina.net/uploads/img/201904/14160633_u59G.png "")
-![](https://static.oschina.net/uploads/img/201907/05165142_yyQ7.png "")
+![](https://oscimg.oschina.net/oscnet/up-fe98e9f766e5abb6759f6f13d5f9186f0cf.png) ![](https://static.oschina.net/uploads/img/201904/14160917_9Ftz.png) ![](https://static.oschina.net/uploads/img/201904/14160633_u59G.png) ![](https://static.oschina.net/uploads/img/201907/05165142_yyQ7.png)
 
 报表设计
 
-![](https://oscimg.oschina.net/oscnet/up-da89eb034b8583d57b3f61493fec313ed28.png)
-![](https://oscimg.oschina.net/oscnet/up-35deca9d020d61ad464accfdeb3bb90ba5c.png)
-![](https://oscimg.oschina.net/oscnet/up-d1695b4a53ebbc9e9651e309e5af1c8bd30.png)
-![](https://oscimg.oschina.net/oscnet/up-4cc634b612e97f08ab702ef34f2ede53f2a.png)
-
+![](https://oscimg.oschina.net/oscnet/up-da89eb034b8583d57b3f61493fec313ed28.png) ![](https://oscimg.oschina.net/oscnet/up-35deca9d020d61ad464accfdeb3bb90ba5c.png) ![](https://oscimg.oschina.net/oscnet/up-d1695b4a53ebbc9e9651e309e5af1c8bd30.png) ![](https://oscimg.oschina.net/oscnet/up-4cc634b612e97f08ab702ef34f2ede53f2a.png)
 
 大屏模板
 
-![](https://static.oschina.net/uploads/img/201912/25133248_Ag1C.jpg "")
+![](https://static.oschina.net/uploads/img/201912/25133248_Ag1C.jpg)
 
-![](https://static.oschina.net/uploads/img/201912/25133301_k9Kc.jpg "")
+![](https://static.oschina.net/uploads/img/201912/25133301_k9Kc.jpg)
 
 ![](https://oscimg.oschina.net/oscnet/up-649cb79c01eb95d5c2217a5dad28515da82.png)
-
-
 
 ## 入门必备
 
 本项目需要一定前端基础知识，请确保掌握 Vue 的基础知识，以便能处理一些常见的问题。 建议在开发前先学一下以下内容，提前了解和学习这些知识，会对项目理解非常有帮助:
 
-*   [Vue3 文档](https://v3.vuejs.org/)
-*   [TypeScript](https://www.typescriptlang.org/)
-*   [Vue-router](https://next.router.vuejs.org/)
-*   [Ant-Design-Vue](https://2x.antdv.com/docs/vue/introduce-cn/)
-*   [Vben文档](https://vvbin.cn/doc-next)
-*   [Es6](https://es6.ruanyifeng.com/)
-*   [Vitejs](https://vitejs.dev/)
-*   [Pinia(vuex替代方案)](https://pinia.esm.dev/introduction.html)
-*   [Vue-RFCS](https://github.com/vuejs/rfcs)
-*   [Vue2 迁移到 3](https://v3.vuejs.org/guide/migration/introduction.html)
-*   [~~WindiCss~~](https://windicss.netlify.app/)
+-   [Vue3 文档](https://v3.vuejs.org/)
+-   [TypeScript](https://www.typescriptlang.org/)
+-   [Vue-router](https://next.router.vuejs.org/)
+-   [Ant-Design-Vue](https://2x.antdv.com/docs/vue/introduce-cn/)
+-   [Vben 文档](https://vvbin.cn/doc-next)
+-   [Es6](https://es6.ruanyifeng.com/)
+-   [Vitejs](https://vitejs.dev/)
+-   [Pinia(vuex 替代方案)](https://pinia.esm.dev/introduction.html)
+-   [Vue-RFCS](https://github.com/vuejs/rfcs)
+-   [Vue2 迁移到 3](https://v3.vuejs.org/guide/migration/introduction.html)
+-   [~~WindiCss~~](https://windicss.netlify.app/)
 
-
-##   浏览器支持
+## 浏览器支持
 
 **本地开发**推荐使用`Chrome 最新版`浏览器，**不支持**`Chrome 80`以下版本。
 
@@ -368,6 +338,3 @@ Online表单&Online报表&代码生成
 | [![IE](https://raw.githubusercontent.com/alrra/browser-logos/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_48x48.png)](http://godban.github.io/browsers-support-badges/)IE | [![ Edge](https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png)](http://godban.github.io/browsers-support-badges/)Edge | [![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png)](http://godban.github.io/browsers-support-badges/)Firefox | [![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png)](http://godban.github.io/browsers-support-badges/)Chrome | [![Safari](https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png)](http://godban.github.io/browsers-support-badges/)Safari |
 | --- | --- | --- | --- | --- |
 | not support | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
-
-
-
