@@ -36,9 +36,7 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
-        <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
+        <a-button type="primary" preIcon="ant-design:export-outlined" @click="handleExport"> 导出</a-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
@@ -52,10 +50,6 @@
             <Icon icon="mdi:chevron-down"></Icon>
           </a-button>
         </a-dropdown>
-      </template>
-      <!--操作栏-->
-      <template #action="{ record }">
-        <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)" />
       </template>
       <!--字段回显插槽-->
       <template #htmlSlot="{ text }">
@@ -74,7 +68,7 @@
 
 <script lang="ts" name="xmsale-vSalorderNodetime" setup>
 import { ref, reactive } from 'vue';
-import { BasicTable, useTable, TableAction } from '/@/components/Table';
+import { BasicTable } from '/@/components/Table';
 import { useListPage } from '/@/hooks/system/useListPage';
 import { columns } from './VSalorderNodetime.data';
 import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './VSalorderNodetime.api';
@@ -82,20 +76,18 @@ import { downloadFile } from '/@/utils/common/renderUtils';
 import VSalorderNodetimeModal from './components/VSalorderNodetimeModal.vue'
 
 const queryParam = ref<any>({});
+const exParam = ref<any>({});
 const toggleSearchStatus = ref<boolean>(false);
 const registerModal = ref();
 //注册table数据
-const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
+const { tableContext, onExportXls, onImportXls } = useListPage({
   tableProps: {
     title: 'v_salorder_nodetime',
     api: list,
     columns,
     canResize: false,
     useSearchForm: false,
-    actionColumn: {
-      width: 120,
-      fixed: 'right',
-    },
+    showActionColumn: false,
     defSort: {
       column: '',
       order: 'desc',
@@ -107,13 +99,14 @@ const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
   exportConfig: {
     name: "v_salorder_nodetime",
     url: getExportUrl,
+    exParam,
   },
   importConfig: {
     url: getImportUrl,
     success: handleSuccess
   },
 });
-const [registerTable, { reload, collapseAll, updateTableDataRecord, findTableDataRecord, getDataSource }, { rowSelection, selectedRowKeys }] = tableContext;
+const [registerTable, { reload }, { rowSelection, selectedRowKeys }] = tableContext;
 const labelCol = reactive({
   xs: { span: 24 },
   sm: { span: 7 },
@@ -122,37 +115,6 @@ const wrapperCol = reactive({
   xs: { span: 24 },
   sm: { span: 16 },
 });
-
-/**
- * 新增事件
- */
-function handleAdd() {
-  registerModal.value.disableSubmit = false;
-  registerModal.value.add();
-}
-
-/**
- * 编辑事件
- */
-function handleEdit(record: Recordable) {
-  registerModal.value.disableSubmit = false;
-  registerModal.value.edit(record);
-}
-
-/**
- * 详情
- */
-function handleDetail(record: Recordable) {
-  registerModal.value.disableSubmit = true;
-  registerModal.value.edit(record);
-}
-
-/**
- * 删除事件
- */
-async function handleDelete(record) {
-  await deleteOne({ id: record.id }, handleSuccess);
-}
 
 /**
  * 批量删除事件
@@ -168,41 +130,16 @@ function handleSuccess() {
   (selectedRowKeys.value = []) && reload();
 }
 
-/**
- * 操作栏
- */
-function getTableAction(record) {
-  return [
-    {
-      label: '编辑',
-      onClick: handleEdit.bind(null, record),
-    },
-  ];
-}
-
-/**
- * 下拉操作栏
- */
-function getDropDownAction(record) {
-  return [
-    {
-      label: '详情',
-      onClick: handleDetail.bind(null, record),
-    },
-    {
-      label: '删除',
-      popConfirm: {
-        title: '是否确认删除',
-        confirm: handleDelete.bind(null, record),
-      },
-    },
-  ];
+function handleExport() {
+  exParam.value = queryParam.value;
+  onExportXls();
 }
 
 /**
  * 查询
  */
 function searchQuery() {
+  exParam.value = queryParam.value;
   reload();
 }
 
@@ -211,13 +148,11 @@ function searchQuery() {
  */
 function searchReset() {
   queryParam.value = {};
+  exParam.value = {};
   selectedRowKeys.value = [];
   //刷新数据
   reload();
 }
-
-
-
 </script>
 
 <style lang="less" scoped>

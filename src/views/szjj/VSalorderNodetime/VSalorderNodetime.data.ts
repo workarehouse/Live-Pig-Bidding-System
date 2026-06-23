@@ -1,7 +1,111 @@
+import { h } from 'vue'
 import { BasicColumn } from '/@/components/Table'
 import { FormSchema } from '/@/components/Table'
-import { rules } from '/@/utils/helper/validator'
-import { render } from '/@/utils/common/renderUtils'
+import Icon from '/@/components/Icon'
+
+const formatNodeTimeParts = (text) => {
+    if (!text) {
+        return {
+            dateText: '',
+            timeText: ''
+        }
+    }
+    const value = String(text).trim().replace('T', ' ').replace(/\s+/g, ' ')
+    const [datePart = '', timePart = ''] = value.split(' ')
+    const dateText = datePart.length >= 10 ? datePart.substr(5, 5) : datePart
+    const timeText = timePart.length >= 5 ? timePart.substr(0, 5) : timePart
+    return {
+        dateText,
+        timeText
+    }
+}
+
+const getTimeoutMinutes = (value) => {
+    const minutes = Number(value)
+    return Number.isFinite(minutes) && minutes > 0 ? minutes : undefined
+}
+
+const timeoutDurationFields = ['reclamdatDur', 'bsaldatDur', 'codsmtimDur', 'lastreclamdatDur', 'issudatDur', 'wdelvdatDur', 'delvdatDur']
+
+const renderTimeoutMinutes = (minutes) => {
+    return h(
+        'div',
+        {
+            style: {
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#262626',
+                lineHeight: '18px',
+                whiteSpace: 'nowrap'
+            }
+        },
+        [
+            h(Icon, {
+                icon: 'ant-design:clock-circle-outlined',
+                size: 14,
+                style: {
+                    marginRight: '4px'
+                }
+            }),
+            h('span', `${minutes}分钟`)
+        ]
+    )
+}
+
+const renderTotalTimeout = (record) => {
+    const hasDurationValue = timeoutDurationFields.some(
+        (field) => record?.[field] !== undefined && record?.[field] !== null && record?.[field] !== ''
+    )
+    if (!hasDurationValue) {
+        return ''
+    }
+
+    const totalMinutes = timeoutDurationFields.reduce((sum, field) => {
+        const minutes = Number(record?.[field])
+        return Number.isFinite(minutes) && minutes > 0 ? sum + minutes : sum
+    }, 0)
+
+    return renderTimeoutMinutes(totalMinutes)
+}
+
+const renderNodeTime = (text, record, durationField: string) => {
+    const { dateText, timeText } = formatNodeTimeParts(text)
+    const timeoutMinutes = getTimeoutMinutes(record?.[durationField])
+    if (!dateText && !timeText && !timeoutMinutes) {
+        return ''
+    }
+
+    const children: any[] = []
+    const nodeTimeText = [dateText, timeText].filter(Boolean).join(' ')
+    if (nodeTimeText) {
+        children.push(
+            h(
+                'div',
+                {
+                    style: {
+                        whiteSpace: 'nowrap'
+                    }
+                },
+                nodeTimeText
+            )
+        )
+    }
+    if (timeoutMinutes) {
+        children.push(h('div', { style: { marginTop: '2px' } }, [renderTimeoutMinutes(timeoutMinutes)]))
+    }
+
+    return h(
+        'div',
+        {
+            style: {
+                lineHeight: '18px',
+                textAlign: 'center'
+            }
+        },
+        children
+    )
+}
 //列表数据
 export const columns: BasicColumn[] = [
     {
@@ -12,10 +116,7 @@ export const columns: BasicColumn[] = [
     {
         title: '销售日期',
         align: 'center',
-        dataIndex: 'saldat',
-        customRender: ({ text }) => {
-            return !text ? '' : text.length > 10 ? text.substr(0, 10) : text
-        }
+        dataIndex: 'saldat'
     },
     // {
     //     title: '编码',
@@ -50,18 +151,13 @@ export const columns: BasicColumn[] = [
     {
         title: '收款确认(财务)',
         align: 'center',
-        dataIndex: 'repushdat',
-        customRender: ({ text }) => {
-            return !text ? '' : text.length > 10 ? text.substr(0, 10) : text
-        }
+        dataIndex: 'repushdat'
     },
     {
         title: '收款领用(销售员)',
         align: 'center',
         dataIndex: 'reclamdat',
-        customRender: ({ text }) => {
-            return !text ? '' : text.length > 10 ? text.substr(0, 10) : text
-        }
+        customRender: ({ text, record }) => renderNodeTime(text, record, 'reclamdatDur')
     },
     // {
     //     title: 'reclamdatDur',
@@ -69,12 +165,10 @@ export const columns: BasicColumn[] = [
     //     dataIndex: 'reclamdatDur'
     // },
     {
-        title: '售前完成时间',
+        title: '售前准备（场长）',
         align: 'center',
         dataIndex: 'bsaldat',
-        customRender: ({ text }) => {
-            return !text ? '' : text.length > 10 ? text.substr(0, 10) : text
-        }
+        customRender: ({ text, record }) => renderNodeTime(text, record, 'bsaldatDur')
     },
     // {
     //     title: 'bsaldatDur',
@@ -82,12 +176,10 @@ export const columns: BasicColumn[] = [
     //     dataIndex: 'bsaldatDur'
     // },
     {
-        title: '最后一张码单',
+        title: '码单提交（开票员）',
         align: 'center',
         dataIndex: 'codsmtim',
-        customRender: ({ text }) => {
-            return !text ? '' : text.length > 10 ? text.substr(0, 10) : text
-        }
+        customRender: ({ text, record }) => renderNodeTime(text, record, 'codsmtimDur')
     },
     // {
     //     title: 'codsmtimDur',
@@ -99,9 +191,7 @@ export const columns: BasicColumn[] = [
         align: 'center',
         width: 180,
         dataIndex: 'lastreclamdat',
-        customRender: ({ text }) => {
-            return !text ? '' : text.length > 10 ? text.substr(0, 10) : text
-        }
+        customRender: ({ text, record }) => renderNodeTime(text, record, 'lastreclamdatDur')
     },
     // {
     //     title: 'lastreclamdatDur',
@@ -112,18 +202,14 @@ export const columns: BasicColumn[] = [
         title: '折减审批(销售员)',
         align: 'center',
         dataIndex: 'issudat',
-        customRender: ({ text }) => {
-            return !text ? '' : text.length > 10 ? text.substr(0, 10) : text
-        }
+        customRender: ({ text, record }) => renderNodeTime(text, record, 'issudatDur')
     },
     {
         title: '订单交割(开票 + 销售)',
         width: 180,
         align: 'center',
         dataIndex: 'wdelvdat',
-        customRender: ({ text }) => {
-            return !text ? '' : text.length > 10 ? text.substr(0, 10) : text
-        }
+        customRender: ({ text, record }) => renderNodeTime(text, record, 'wdelvdatDur')
     },
     // {
     //     title: 'wdelvdatDur',
@@ -137,12 +223,10 @@ export const columns: BasicColumn[] = [
     //     dataIndex: 'issudatDur'
     // },
     {
-        title: '订单已交割时间',
+        title: '累计超时',
         align: 'center',
-        dataIndex: 'delvdat',
-        customRender: ({ text }) => {
-            return !text ? '' : text.length > 10 ? text.substr(0, 10) : text
-        }
+        dataIndex: 'totalTimeoutDur',
+        customRender: ({ record }) => renderTotalTimeout(record)
     }
     // {
     //     title: 'delvdatDur',
@@ -179,7 +263,7 @@ export const formSchema: FormSchema[] = [
         label: '单号',
         field: 'ordno',
         component: 'Input',
-        dynamicRules: ({ model, schema }) => {
+        dynamicRules: () => {
             return [{ required: true, message: '请输入单号!' }]
         }
     },

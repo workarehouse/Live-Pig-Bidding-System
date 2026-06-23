@@ -25,6 +25,7 @@ interface ListPageOptions {
     name?: string | (() => string);
     //导出参数
     params?: object;
+    exParam?: Ref<any>;
   };
   // 导入配置
   importConfig?: {
