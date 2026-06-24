@@ -33,23 +33,10 @@
       </a-form>
     </div>
     <!--引用表格-->
-    <BasicTable @register="registerTable" :rowSelection="rowSelection">
+    <BasicTable @register="registerTable">
       <!--插槽:table标题-->
       <template #tableTitle>
         <a-button type="primary" preIcon="ant-design:export-outlined" @click="handleExport"> 导出</a-button>
-        <a-dropdown v-if="selectedRowKeys.length > 0">
-          <template #overlay>
-            <a-menu>
-              <a-menu-item key="1" @click="batchHandleDelete">
-                <Icon icon="ant-design:delete-outlined"></Icon>
-                删除
-              </a-menu-item>
-            </a-menu>
-          </template>
-          <a-button>批量操作
-            <Icon icon="mdi:chevron-down"></Icon>
-          </a-button>
-        </a-dropdown>
       </template>
       <!--字段回显插槽-->
       <template #htmlSlot="{ text }">
@@ -71,7 +58,7 @@ import { ref, reactive } from 'vue';
 import { BasicTable } from '/@/components/Table';
 import { useListPage } from '/@/hooks/system/useListPage';
 import { columns } from './VSalorderNodetime.data';
-import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './VSalorderNodetime.api';
+import { list, getExportUrl } from './VSalorderNodetime.api';
 import { downloadFile } from '/@/utils/common/renderUtils';
 import VSalorderNodetimeModal from './components/VSalorderNodetimeModal.vue'
 
@@ -80,7 +67,7 @@ const exParam = ref<any>({});
 const toggleSearchStatus = ref<boolean>(false);
 const registerModal = ref();
 //注册table数据
-const { tableContext, onExportXls, onImportXls } = useListPage({
+const { tableContext, onExportXls } = useListPage({
   tableProps: {
     title: 'v_salorder_nodetime',
     api: list,
@@ -97,16 +84,12 @@ const { tableContext, onExportXls, onImportXls } = useListPage({
     },
   },
   exportConfig: {
-    name: "v_salorder_nodetime",
+    name: "超时节点订单报表",
     url: getExportUrl,
     exParam,
   },
-  importConfig: {
-    url: getImportUrl,
-    success: handleSuccess
-  },
 });
-const [registerTable, { reload }, { rowSelection, selectedRowKeys }] = tableContext;
+const [registerTable, { reload }] = tableContext;
 const labelCol = reactive({
   xs: { span: 24 },
   sm: { span: 7 },
@@ -117,17 +100,10 @@ const wrapperCol = reactive({
 });
 
 /**
- * 批量删除事件
- */
-async function batchHandleDelete() {
-  await batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
-}
-
-/**
  * 成功回调
  */
 function handleSuccess() {
-  (selectedRowKeys.value = []) && reload();
+  reload();
 }
 
 function handleExport() {
@@ -149,7 +125,6 @@ function searchQuery() {
 function searchReset() {
   queryParam.value = {};
   exParam.value = {};
-  selectedRowKeys.value = [];
   //刷新数据
   reload();
 }

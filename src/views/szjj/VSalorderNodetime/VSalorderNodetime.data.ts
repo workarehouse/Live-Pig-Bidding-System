@@ -193,11 +193,12 @@ export const columns: BasicColumn[] = [
         dataIndex: 'lastreclamdat',
         customRender: ({ text, record }) => renderNodeTime(text, record, 'lastreclamdatDur')
     },
-    // {
-    //     title: 'lastreclamdatDur',
-    //     align: 'center',
-    //     dataIndex: 'lastreclamdatDur'
-    // },
+    {
+        title: '码单审核（开票员）',
+        align: 'center',
+        dataIndex: 'wdelvdat',
+        customRender: ({ text, record }) => renderNodeTime(text, record, 'wdelvdatDur')
+    },
     {
         title: '折减审批(销售员)',
         align: 'center',
@@ -208,31 +209,15 @@ export const columns: BasicColumn[] = [
         title: '订单交割(开票 + 销售)',
         width: 180,
         align: 'center',
-        dataIndex: 'wdelvdat',
-        customRender: ({ text, record }) => renderNodeTime(text, record, 'wdelvdatDur')
+        dataIndex: 'delvdat',
+        customRender: ({ text, record }) => renderNodeTime(text, record, 'delvdatDur')
     },
-    // {
-    //     title: 'wdelvdatDur',
-    //     align: 'center',
-    //     dataIndex: 'wdelvdatDur'
-    // },
-
-    // {
-    //     title: 'issudatDur',
-    //     align: 'center',
-    //     dataIndex: 'issudatDur'
-    // },
     {
         title: '累计超时',
         align: 'center',
         dataIndex: 'totalTimeoutDur',
         customRender: ({ record }) => renderTotalTimeout(record)
     }
-    // {
-    //     title: 'delvdatDur',
-    //     align: 'center',
-    //     dataIndex: 'delvdatDur'
-    // }
 ]
 
 //查询数据
