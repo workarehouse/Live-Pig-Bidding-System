@@ -76,7 +76,7 @@ const { tableContext, onExportXls } = useListPage({
     useSearchForm: false,
     showActionColumn: false,
     defSort: {
-      column: '',
+      column: 'saldat',
       order: 'desc',
     },
     beforeFetch: (params) => {
