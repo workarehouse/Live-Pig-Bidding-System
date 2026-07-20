@@ -9,10 +9,35 @@
               <a-input placeholder="请输入关键字" v-model:value="queryParam.keyword"></a-input>
             </a-form-item>
           </a-col>
+          <a-col :lg="8">
+            <a-form-item label="销售时间">
+              <a-date-picker
+                v-model:value="queryParam.saldat_begin"
+                value-format="YYYY-MM-DD"
+                placeholder="开始日期"
+                class="query-group-cust"
+              />
+              <span class="query-group-split-cust">~</span>
+              <a-date-picker
+                v-model:value="queryParam.saldat_end"
+                value-format="YYYY-MM-DD"
+                placeholder="结束日期"
+                class="query-group-cust"
+              />
+            </a-form-item>
+          </a-col>
           <template v-if="toggleSearchStatus">
             <a-col :lg="8">
               <a-form-item label="编码">
                 <a-input placeholder="请输入编码" v-model:value="queryParam.farmcod"></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :lg="8">
+              <a-form-item label="是否超期">
+                <a-select placeholder="请选择是否超期" v-model:value="queryParam.fullExpFlg" allowClear>
+                  <a-select-option value="Y">是</a-select-option>
+                  <a-select-option value="N">否</a-select-option>
+                </a-select>
               </a-form-item>
             </a-col>
           </template>
@@ -64,7 +89,7 @@ import VSalorderNodetimeModal from './components/VSalorderNodetimeModal.vue'
 
 const queryParam = ref<any>({});
 const exParam = ref<any>({});
-const toggleSearchStatus = ref<boolean>(false);
+const toggleSearchStatus = ref<boolean>(true);
 const registerModal = ref();
 //注册table数据
 const { tableContext, onExportXls } = useListPage({

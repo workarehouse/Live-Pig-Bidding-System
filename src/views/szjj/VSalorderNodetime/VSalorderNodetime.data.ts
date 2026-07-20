@@ -101,7 +101,7 @@ const renderTotalTimeout = (record) => {
 }
 
 const renderOrderDuration = (record) => {
-    const durationText = formatAdaptiveDuration(record?.full_dur)
+    const durationText = formatAdaptiveDuration(record?.fullDur)
     return durationText ? renderDuration(durationText) : ''
 }
 
@@ -258,8 +258,15 @@ export const columns: BasicColumn[] = [
         title: '订单耗时',
         align: 'center',
         width: 160,
-        dataIndex: 'full_dur',
+        dataIndex: 'fullDur',
         customRender: ({ record }) => renderOrderDuration(record)
+    },
+    {
+        title: '是否超期',
+        align: 'center',
+        width: 160,
+        dataIndex: 'fullExpFlg',
+        customRender: ({ text }) => (text === 'Y' ? '是' : text === 'N' ? '否' : '')
     }
 ]
 
