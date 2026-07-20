@@ -76,7 +76,7 @@ const { tableContext, onExportXls } = useListPage({
     useSearchForm: false,
     showActionColumn: false,
     defSort: {
-      column: 'saldat',
+      column: 'credat',
       order: 'desc',
     },
     beforeFetch: (params) => {
@@ -89,11 +89,13 @@ const { tableContext, onExportXls } = useListPage({
     exParam,
   },
 });
+
 const [registerTable, { reload }] = tableContext;
 const labelCol = reactive({
   xs: { span: 24 },
   sm: { span: 7 },
 });
+
 const wrapperCol = reactive({
   xs: { span: 24 },
   sm: { span: 16 },

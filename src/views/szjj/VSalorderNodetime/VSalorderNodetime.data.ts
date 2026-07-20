@@ -27,7 +27,36 @@ const getTimeoutMinutes = (value) => {
 
 const timeoutDurationFields = ['reclamdatDur', 'bsaldatDur', 'codsmtimDur', 'lastreclamdatDur', 'issudatDur', 'wdelvdatDur', 'delvdatDur']
 
-const renderTimeoutMinutes = (minutes) => {
+const formatAdaptiveDuration = (value) => {
+    if (value === undefined || value === null || value === '') {
+        return ''
+    }
+
+    const durationMinutes = Number(value)
+    if (!Number.isFinite(durationMinutes) || durationMinutes < 0) {
+        return ''
+    }
+
+    const totalMinutes = Math.round(durationMinutes)
+    const days = Math.floor(totalMinutes / (24 * 60))
+    const hours = Math.floor((totalMinutes % (24 * 60)) / 60)
+    const minutes = totalMinutes % 60
+    const parts: string[] = []
+
+    if (days) {
+        parts.push(`${days}天`)
+    }
+    if (hours) {
+        parts.push(`${hours}小时`)
+    }
+    if (minutes || parts.length === 0) {
+        parts.push(`${minutes}分钟`)
+    }
+
+    return parts.join(' ')
+}
+
+const renderDuration = (durationText) => {
     return h(
         'div',
         {
@@ -48,10 +77,12 @@ const renderTimeoutMinutes = (minutes) => {
                     marginRight: '4px'
                 }
             }),
-            h('span', `${minutes}分钟`)
+            h('span', durationText)
         ]
     )
 }
+
+const renderTimeoutMinutes = (minutes) => renderDuration(`${minutes}分钟`)
 
 const renderTotalTimeout = (record) => {
     const hasDurationValue = timeoutDurationFields.some(
@@ -67,6 +98,11 @@ const renderTotalTimeout = (record) => {
     }, 0)
 
     return renderTimeoutMinutes(totalMinutes)
+}
+
+const renderOrderDuration = (record) => {
+    const durationText = formatAdaptiveDuration(record?.full_dur)
+    return durationText ? renderDuration(durationText) : ''
 }
 
 const renderNodeTime = (text, record, durationField: string) => {
@@ -217,6 +253,13 @@ export const columns: BasicColumn[] = [
         align: 'center',
         dataIndex: 'totalTimeoutDur',
         customRender: ({ record }) => renderTotalTimeout(record)
+    },
+    {
+        title: '订单耗时',
+        align: 'center',
+        width: 160,
+        dataIndex: 'full_dur',
+        customRender: ({ record }) => renderOrderDuration(record)
     }
 ]
 
