@@ -336,7 +336,8 @@ const { resetFields, validate, validateInfos } = useForm(formData, validatorRule
  * 新增
  */
 function add() {
-  edit({})
+  // 新增时状态默认「启用」
+  edit({ auditing: '1' })
 }
 
 /**

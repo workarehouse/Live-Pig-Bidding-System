@@ -7,7 +7,16 @@
             </a-col>
             <a-col :span="10">
                 <p class="data">数据权限</p>
-                <a-tree checkable :tree-data="treeData" autoExpandParent v-model:checkedKeys="checkedKeys"> </a-tree>
+                <p class="data-tip">公司级权限和猪场级权限相互独立，分别用于不同的权限控制，请按需分别勾选。</p>
+                <a-tree :checkable="true" :check-strictly="true" :tree-data="treeData" :auto-expand-parent="true"
+                    :checked-keys="strictCheckedKeys" @check="handleCheck">
+                    <template #title="node">
+                        <span>{{ node.title }}</span>
+                        <span v-if="getCheckedCount(node.key) > 0" class="checked-count">
+                            已选 {{ getCheckedCount(node.key) }}
+                        </span>
+                    </template>
+                </a-tree>
             </a-col>
         </a-row>
     </BasicDrawer>
@@ -43,11 +52,10 @@ const showFooter = ref(true)
 const [registerDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (data) => {
     // 打开抽屉时刷新部门树
     const treeRes = await defHttp.get({ url: '/xmsale/baseapi/findsaleOrgTree' })
-    treeData.value = markLeafOnlyCheckable(treeRes || [])
+    treeData.value = treeRes || []
 
-    // 组合成数组,数据权限赋值
+    // 组合成数组,数据权限赋值（不联动，勾选状态与保存值一一对应）
     checkedKeys.value = data?.record?.dataAuth ? data.record.dataAuth.split(',') : []
-    console.log(checkedKeys.value)
 
     await resetFields()
     showFooter.value = data?.showFooter ?? true
@@ -128,28 +136,48 @@ const getTitle = computed(() => (!unref(isUpdate) ? '新增用户' : '编辑用�
 const { adaptiveWidth } = useDrawerAdaptiveWidth()
 
 type TreeNode = {
+    key?: string
     children?: TreeNode[]
-    checkable?: boolean
-    disableCheckbox?: boolean
     [key: string]: unknown
 }
 
-// checkedKeys用,拼接成字符串
-const sumCheckedKeys = computed(() => {
-    return checkedKeys?.value.join(',')
+// 统计每个父节点「下级已勾选的数量」，仅用于标题旁提示，不影响勾选与提交
+// 返回值为这批节点（含其后代）的已勾选总数
+const collectCheckedCount = (nodes: TreeNode[] = [], checkedSet: Set<string>, map: Map<string, number>): number => {
+    let total = 0
+    nodes.forEach((node) => {
+        const key = node.key != null ? String(node.key) : null
+        const children = Array.isArray(node.children) ? node.children : []
+        const childCount = children.length > 0 ? collectCheckedCount(children, checkedSet, map) : 0
+        if (key != null && children.length > 0) {
+            map.set(key, childCount)
+        }
+        total += childCount + (key != null && checkedSet.has(key) ? 1 : 0)
+    })
+    return total
+}
+
+const checkedCountMap = computed(() => {
+    const map = new Map<string, number>()
+    collectCheckedCount(treeData.value, new Set(checkedKeys.value ?? []), map)
+    return map
 })
 
-const markLeafOnlyCheckable = (nodes: TreeNode[] = []): TreeNode[] => {
-    return nodes.map((node) => {
-        const hasChildren = Array.isArray(node.children) && node.children.length > 0
-        return {
-            ...node,
-            checkable: !hasChildren,
-            disableCheckbox: hasChildren,
-            children: hasChildren ? markLeafOnlyCheckable(node.children) : node.children
-        }
-    })
+const getCheckedCount = (key: unknown) => (key == null ? 0 : (checkedCountMap.value.get(String(key)) ?? 0))
+
+// checkStrictly 模式下 checkedKeys 需传 { checked, halfChecked } 形式
+const strictCheckedKeys = computed(() => ({ checked: checkedKeys.value ?? [], halfChecked: [] }))
+
+// 同样地，@check 回传的也是 { checked, halfChecked }，统一成字符串数组
+const handleCheck = (keys: any) => {
+    const checked = Array.isArray(keys) ? keys : (keys?.checked ?? [])
+    checkedKeys.value = checked.map((key: string | number) => String(key))
 }
+
+// checkedKeys用,拼接成字符串：勾选哪些节点就提交哪些，不额外补父节点
+const sumCheckedKeys = computed(() => {
+    return (checkedKeys.value ?? []).join(',')
+})
 
 //提交事件
 async function handleSubmit() {
@@ -174,7 +202,7 @@ async function handleSubmit() {
 onMounted(() => {
     // 获取部门树
     defHttp.get({ url: '/xmsale/baseapi/findsaleOrgTree' }).then((res) => {
-        treeData.value = markLeafOnlyCheckable(res || [])
+        treeData.value = res || []
     })
 })
 </script>
@@ -188,5 +216,21 @@ onMounted(() => {
     font-family: SimSun, sans-serif;
     line-height: 1;
     content: '*';
+}
+
+.data-tip {
+    margin-bottom: 8px;
+    color: rgba(0, 0, 0, 0.45);
+    font-size: 12px;
+    line-height: 18px;
+}
+
+.checked-count {
+    margin-left: 6px;
+    padding: 0 6px;
+    color: #1890ff;
+    font-size: 12px;
+    background: #e6f7ff;
+    border-radius: 8px;
 }
 </style>
