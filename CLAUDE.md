@@ -1,25 +1,10 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
 ## 项目概述
 
 生猪竞价后台管理系统前端，基于 **JeecgBoot-Vue3 3.3.0**（在 Vben-Admin 基础上二次开发的低代码平台）。技术栈：Vue 3 + Vite 2 + TypeScript + Ant Design Vue 2.2.8 + Pinia + Less + WindiCSS。包管理用 yarn。
 
 后端为 JeecgBoot Java 服务，开发环境通过 Vite 代理 `/jeecgboot` 转发到 `https://devenv.luoniushan.com/jeecgboot`（见 `.env.development` 的 `VITE_PROXY`）。生产部署路径为 `/xms/`（`.env.production`）。
-
-## 常用命令
-
-```bash
-yarn install          # 安装依赖（或 yarn bootstrap）
-yarn dev              # 启动开发服务器（vite）
-yarn build            # 生产构建（NODE_ENV=production，构建后执行 postBuild.ts）
-yarn build:test       # 测试环境构建（--mode test）
-yarn type:check       # vue-tsc 类型检查
-yarn lint:eslint      # ESLint 检查并自动修复
-yarn test:unit        # jest 单元测试
-npx jest path/to/xx.test.ts   # 运行单个测试文件
-```
 
 ## 业务代码位置与模块模式
 
