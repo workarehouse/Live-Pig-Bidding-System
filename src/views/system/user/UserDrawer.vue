@@ -15,6 +15,10 @@
                         <span v-if="getCheckedCount(node.key) > 0" class="checked-count">
                             已选 {{ getCheckedCount(node.key) }}
                         </span>
+                        <a-button v-if="isLeafParent(node.key)" size="small" class="check-all"
+                            @click.stop="toggleBranch(node.key)">
+                            {{ isBranchAllChecked(node.key) ? '取消全选' : '全选' }}
+                        </a-button>
                     </template>
                 </a-tree>
             </a-col>
@@ -165,6 +169,73 @@ const checkedCountMap = computed(() => {
 
 const getCheckedCount = (key: unknown) => (key == null ? 0 : (checkedCountMap.value.get(String(key)) ?? 0))
 
+// key -> 节点 的索引，供全选按钮按分支取后代
+const nodeMap = computed(() => {
+    const map = new Map<string, TreeNode>()
+    const walk = (nodes: TreeNode[] = []) => {
+        nodes.forEach((node) => {
+            if (node.key != null) {
+                map.set(String(node.key), node)
+            }
+            if (Array.isArray(node.children)) {
+                walk(node.children)
+            }
+        })
+    }
+    walk(treeData.value)
+    return map
+})
+
+// 仅最末一级父节点（其子节点都是叶子）显示全选按钮
+const isLeafParent = (key: unknown) => {
+    const node = key == null ? null : nodeMap.value.get(String(key))
+    const children = node && Array.isArray(node.children) ? node.children : []
+    return children.length > 0 && children.every((child) => !Array.isArray(child.children) || child.children.length === 0)
+}
+
+// 取该节点全部后代的 key（不含自身，全选不改变父节点自己的勾选状态）
+const getBranchKeys = (key: unknown): string[] => {
+    const node = key == null ? null : nodeMap.value.get(String(key))
+    if (!node) {
+        return []
+    }
+    const keys: string[] = []
+    const walk = (items: TreeNode[] = []) => {
+        items.forEach((item) => {
+            if (item.key != null) {
+                keys.push(String(item.key))
+            }
+            if (Array.isArray(item.children)) {
+                walk(item.children)
+            }
+        })
+    }
+    walk(Array.isArray(node.children) ? node.children : [])
+    return keys
+}
+
+// 子节点是否已全部勾选
+const isBranchAllChecked = (key: unknown) => {
+    const keys = getBranchKeys(key)
+    if (keys.length === 0) {
+        return false
+    }
+    const checkedSet = new Set(checkedKeys.value ?? [])
+    return keys.every((item) => checkedSet.has(item))
+}
+
+// 全选 / 取消全选所有子节点（checkStrictly 模式下需手动维护子节点勾选状态）
+const toggleBranch = (key: unknown) => {
+    const keys = getBranchKeys(key)
+    if (keys.length === 0) {
+        return
+    }
+    const checkedSet = new Set(checkedKeys.value ?? [])
+    const allChecked = keys.every((item) => checkedSet.has(item))
+    keys.forEach((item) => (allChecked ? checkedSet.delete(item) : checkedSet.add(item)))
+    checkedKeys.value = Array.from(checkedSet)
+}
+
 // checkStrictly 模式下 checkedKeys 需传 { checked, halfChecked } 形式
 const strictCheckedKeys = computed(() => ({ checked: checkedKeys.value ?? [], halfChecked: [] }))
 
@@ -232,5 +303,13 @@ onMounted(() => {
     font-size: 12px;
     background: #e6f7ff;
     border-radius: 8px;
+}
+
+.check-all {
+    height: 20px;
+    margin-left: 8px;
+    padding: 0 8px;
+    font-size: 12px;
+    line-height: 18px;
 }
 </style>
