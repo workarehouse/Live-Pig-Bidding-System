@@ -109,7 +109,9 @@ const logTableSchema: BasicColumn[] = [
       dataIndex: 'price',
       align:"left",
       customRender: ({ record }) => {
-      return `${record.credat} 采购商${record.creusrnam} 出价${record.price}元/公斤 ${record.pigcnt}头`;;
+      const log = `${record.credat} 采购商${record.creusrnam} 出价${record.price}元/公斤 ${record.pigcnt}头`;
+      // state 为「黑」时表示该出价异常
+      return record.state === '黑' ? `${log}，客户出价异常，已加入黑名单` : log;
     },
     }
   ];
